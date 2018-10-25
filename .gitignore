@@ -1,0 +1,8 @@
+.vs/
+bin/
+obj/
+
+.ntvs_analysis.dat
+*.js
+*.map
+*.user
