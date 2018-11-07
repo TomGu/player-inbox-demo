@@ -32,6 +32,7 @@ interface IPlayFabHttp {
 interface IPlayFabContext {
     playStreamEvent: PlayStreamModels.IBasePlayStreamEvent;
     playerProfile: IPlayFabPlayerProfile;
+    currentEntity: PlayFabAuthenticationModels.GetEntityTokenResponse;// Added by Tom @todo - get this added correctly?
 }
 
 interface IPlayFabPlayerProfile {
