@@ -6,9 +6,3 @@ obj/
 *.js
 *.map
 *.user
-
-DefaultCloudScript.ts
-LiveOpsExample.ts
-OtherExample.ts
-UnicornBattle.ts
-TitleAB.ts
