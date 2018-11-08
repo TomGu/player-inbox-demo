@@ -1,8 +1,8 @@
 {
-  "name": "playfab-cloudscriptexample",
+  "name": "playfab-playerinboxcloudscript",
   "version": "0.0.181001",
-  "description": "PlayFab CloudScriptExample",
-  "main": "ExampleCloudScript.js",
+  "description": "PlayFab Player Inbox CloudScript",
+  "main": "PlayerInboxCloudScript.js",
   "author": {
     "name": "PlayFab",
     "email": "devrel@playfab.com"
