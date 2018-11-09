@@ -193,7 +193,7 @@ interface IDeleteMessageResult {
 var Truncate = function (args: any, context: IPlayFabContext) {
     // @todo: Before shipping, remove this or add a check to ensure 
     // only the right administrators or services can call this function
-    var targetPlayerID: string = args.UserID;
+    var targetPlayerID: string = args.UserId;
     try {
         storeInbox(new playerInbox(), getTitlePlayerEntityKeyFromTitlePlayerID(targetPlayerID));
     } catch (err) {
