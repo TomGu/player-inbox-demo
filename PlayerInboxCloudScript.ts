@@ -142,8 +142,13 @@ interface ISendMessageResult {
     Key: string;
 }
 
-// Takes a string "Key" which is the identifier for the message to delete.
-// This function will delete all messages matching the specified key, even if more than 1 exists.
+///
+//  function DeleteMessage
+//  Description: Deletes the oldest message with the specified Key in the current player's inbox.  
+//               Note that there should only be at most 1 matching message.
+//  Parameters:
+//      Key = Identifier of the message to delete
+///
 var DeleteMessage = function (args: any, context: IPlayFabContext): IDeleteMessageResult {
 
     var messageToDeleteKey: string = args.Key;
@@ -161,6 +166,7 @@ var DeleteMessage = function (args: any, context: IPlayFabContext): IDeleteMessa
         if (myInbox.Messages[i].Key == messageToDeleteKey) {
             myInbox.Messages.splice(i, 1);
             deleteCount++;
+            break; // remove this if you want to delete all messages with the specified key
         }
     }
 
@@ -172,7 +178,7 @@ var DeleteMessage = function (args: any, context: IPlayFabContext): IDeleteMessa
         }
     }
     else {
-        log.error("DeleteMessage: Message " + messageToDeleteKey + " not found" );
+        log.error("DeleteMessage: Message with key " + messageToDeleteKey + " not found" );
     }
 
     return { Key: messageToDeleteKey };
@@ -196,6 +202,7 @@ var Truncate = function (args: any, context: IPlayFabContext) {
 }
 handlers["TruncateInbox"] = Truncate;
 
+// Internal helper function to get a player inbox from the entiy file where it is stored
 function GetInboxFromFile(targetEntity: PlayFabAuthenticationModels.EntityKey): playerInbox {
     //log.debug("GetMessagesFromFile called for entity: " + targetEntity.Id + " " + targetEntity.Type);
 
@@ -219,12 +226,14 @@ function GetInboxFromFile(targetEntity: PlayFabAuthenticationModels.EntityKey): 
         targetInbox = new playerInbox();
     }
 
-    targetInbox.ProfileVersion = getFilesResult.ProfileVersion;
+    //Track which ProfileVersion this came from to avoid stomping on conflicting updates later
+    targetInbox.ProfileVersion = getFilesResult.ProfileVersion; 
 
     return targetInbox;
 }
 
 
+// Helper function to create UUIDs for messages.  
 // based on this post: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 function generateUUID(): string { // Public Domain/MIT 
     var d = new Date().getTime();
@@ -235,7 +244,8 @@ function generateUUID(): string { // Public Domain/MIT
     });
 }
 
-// Internal function used to store player inbox object to a file for the specified target player entity
+// Internal function used to store player inbox object to a file for the specified target player entity.
+// Note that no exception handling happens in here, we will catch exceptions in the functions which call this one.
 function storeInbox(inboxToStore: playerInbox, targetEntity: PlayFabAuthenticationModels.EntityKey) {
 
     var initFileUploadRequest: PlayFabDataModels.InitiateFileUploadsRequest = {
